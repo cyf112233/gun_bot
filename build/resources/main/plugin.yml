@@ -1,7 +1,0 @@
-name: gun_bot
-version: '1.0.0'
-main: byd.cxkcxkckx.gun_bot.gun_bot
-api-version: 1.13
-depend: [  ]
-softdepend: [ PlaceholderAPI ]
-authors: [ cxkcxkckx ]
