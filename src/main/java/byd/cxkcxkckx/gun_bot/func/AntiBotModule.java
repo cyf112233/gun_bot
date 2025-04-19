@@ -47,7 +47,7 @@ public class AntiBotModule extends AbstractModule implements Listener {
         getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
         
         // 检查captcha插件是否存在
-        captchaPlugin = getPlugin().getServer().getPluginManager().getPlugin("captcha");
+        checkCaptchaPlugin();
         
         // 保存原始 MOTD
         originalMotd = getPlugin().getServer().getMotd();
@@ -77,6 +77,10 @@ public class AntiBotModule extends AbstractModule implements Listener {
         consoleAttackMessage = config.getString("anti-bot.messages.console-attack-message", "检测到可能的机器人攻击，来自IP: {ip}");
         consoleBanDurationMessage = config.getString("anti-bot.messages.console-ban-duration-message", "服务器将在 {time} 后拒绝新的连接");
         motdBanMessage = config.getString("anti-bot.messages.motd-ban-message", "§c服务器正在遭受攻击，将在 {time} 后恢复");
+    }
+
+    private void checkCaptchaPlugin() {
+        captchaPlugin = getPlugin().getServer().getPluginManager().getPlugin("captcha");
     }
 
     /**
@@ -132,6 +136,9 @@ public class AntiBotModule extends AbstractModule implements Listener {
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (!enabled) return;
+
+        // 每次玩家连接时都检查 captcha 插件状态
+        checkCaptchaPlugin();
 
         // 获取玩家的真实 IP 地址
         String ip = event.getAddress().getHostAddress();
